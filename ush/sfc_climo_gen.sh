@@ -48,9 +48,6 @@ veg_type_src=${veg_type_src:-"modis.igbp.0.05"}
 VEG_TYPE_FILE=${VEG_TYPE_FILE:-${input_sfc_climo_dir}/vegetation_type.${veg_type_src}.nc}
 soil_type_src=${soil_type_src:-"statsgo.0.05"}
 SOIL_TYPE_FILE=${SOIL_TYPE_FILE:-${input_sfc_climo_dir}/soil_type.${soil_type_src}.nc}
-
-
-
 if [ ! -d $SAVE_DIR ]; then
   mkdir -p $SAVE_DIR
 fi
@@ -58,9 +55,7 @@ fi
 rm -fr $WORK_DIR
 mkdir -p $WORK_DIR
 cd $WORK_DIR
-#input_substrate_temperature_file="${input_sfc_climo_dir}/substrate_temperature.2.6x1.5.nc"
-#input_substrate_temperature_file="${input_sfc_climo_dir}/substrate_temperature.gfs.0.5.nc"
-# update the above depending on the fix files
+
 #----------------------------------------------------------------------------------
 # The stand-alone regional and global nest are assumed to be tile 7.
 #----------------------------------------------------------------------------------
@@ -74,7 +69,6 @@ else
 		the_orog_files='"C'${res}'_oro_data.tile1.nc","C'${res}'_oro_data.tile2.nc","C'${res}'_oro_data.tile3.nc","C'${res}'_oro_data.tile4.nc","C'${res}'_oro_data.tile5.nc","C'${res}'_oro_data.tile6.nc"'
 	fi
 fi
-#the_orog_files='"C'${res}'_oro_data.tile1.nc","C'${res}'_oro_data.tile2.nc","C'${res}'_oro_data.tile3.nc","C'${res}'_oro_data.tile4.nc","C'${res}'_oro_data.tile5.nc","C'${res}'_oro_data.tile6.nc"'
 
 cat << EOF > ./fort.41
 &config
