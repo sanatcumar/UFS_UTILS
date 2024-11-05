@@ -6,8 +6,9 @@
 #SBATCH -o log.fv3_grid_driver
 #SBATCH -e log.fv3_grid_driver
 #SBATCH --nodes=2 --ntasks-per-node=15
-#SBATCH -q debug
-#SBATCH -t 00:30:00
+#SBATCH --partition=bigmem
+#SBATCH -q  batch
+#SBATCH -t 04:30:00
 
 #-----------------------------------------------------------------------
 # Driver script to create a cubic-sphere based model grid on Orion.
