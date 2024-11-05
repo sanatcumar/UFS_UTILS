@@ -5,7 +5,7 @@
 #SBATCH --open-mode=truncate
 #SBATCH -o log.fv3_grid_driver
 #SBATCH -e log.fv3_grid_driver
-#SBATCH --nodes=2 --ntasks-per-node=15
+#SBATCH --nodes=6 --ntasks-per-node=12
 #SBATCH --partition=bigmem
 #SBATCH -q  batch
 #SBATCH -t 04:30:00
