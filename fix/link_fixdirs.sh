@@ -47,7 +47,7 @@ pwd=$(pwd -P)
 if [ $machine = "hera" ]; then
     FIX_DIR="/scratch1/NCEPDEV/global/glopara/fix"
 elif [ $machine = "jet" ]; then
-    FIX_DIR="/lfs4/HFIP/hfv3gfs/glopara/git/fv3gfs/fix"
+    FIX_DIR="/lfs5/HFIP/hfv3gfs/glopara/FIX/fix"
 elif [ $machine = "orion" -o $machine = "hercules" ]; then
     FIX_DIR="/work/noaa/global/glopara/fix"
 elif [ $machine = "wcoss2" ]; then
@@ -59,20 +59,16 @@ elif [ $machine = "gaea" ]; then
 fi
 
 am_ver=${am_ver:-20220805}
-orog_ver=${orog_ver:-20231027}
+orog_ver=${orog_ver:-20240917}
 sfc_climo_ver=${sfc_climo_ver:-20230925}
 
-for dir in am orog orog_raw sfc_climo; do
+for dir in am orog sfc_climo; do
     if [ -d $dir ]; then
       [[ $RUN_ENVIR = nco ]] && chmod -R 755 $dir
       rm -rf $dir
     fi
-    if [ $dir = "orog_raw" ]; then
-      $LINK $FIX_DIR/raw/orog ${dir}
-    else
-      fix_ver="${dir}_ver"
-      $LINK $FIX_DIR/$dir/${!fix_ver} ${dir}
-    fi
+    fix_ver="${dir}_ver"
+    $LINK $FIX_DIR/$dir/${!fix_ver} ${dir}
 done
 
 exit 0
