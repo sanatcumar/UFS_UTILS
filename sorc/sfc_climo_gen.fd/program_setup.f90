@@ -21,6 +21,7 @@
  private
 
  character(len=500), public   :: input_leaf_area_index_file = "NULL" !< File containing input leaf area index data.
+ character(len=500), public   :: input_stem_area_index_file = "NULL" !< File containing input stem area index data.
  character(len=500), public   :: input_facsf_file = "NULL" !< File containing input fractional
                                                            !! coverage data for strong zenith angle
                                                            !! dependent albedo.
@@ -38,6 +39,8 @@
 
  character(len=50), public    :: leaf_area_index_method='bilinear' !< Interpolation method for leaf area index.
                                                                    !! Conservative or bilinear (default).
+ character(len=50), public    :: stem_area_index_method='bilinear' !< Interpolation method for stem area index.
+                                                                   !! Conservative or bilinear (default). 
  character(len=50), public    :: maximum_snow_albedo_method='bilinear' !< Interpolation method for max snow albedo.
                                                                        !! Conservative or bilinear (default).
  character(len=50), public    :: snowfree_albedo_method='bilinear' !< Interpolation method for snowfree albedo.
@@ -73,10 +76,12 @@
  namelist /config/ input_facsf_file, input_substrate_temperature_file, &
                    input_maximum_snow_albedo_file, input_snowfree_albedo_file, &
                    input_slope_type_file, input_soil_type_file, input_soil_color_file,&
-                   input_leaf_area_index_file, input_vegetation_type_file, &
+                   input_leaf_area_index_file,input_stem_area_index_file,&
+                   input_vegetation_type_file, &
                    input_vegetation_greenness_file, mosaic_file_mdl, &
                    orog_dir_mdl, orog_files_mdl, halo, &
                    vegetation_greenness_method, leaf_area_index_method, &
+                   stem_area_index_method, &
                    maximum_snow_albedo_method, snowfree_albedo_method, &
                    fract_vegsoil_type
 

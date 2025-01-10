@@ -60,6 +60,9 @@
    case ('leaf_area_index')
      out_file = "./leaf_area_index." // grid_tiles(tile) // ".nc"
      out_file_with_halo = "./leaf_area_index." // grid_tiles(tile) // ".halo.nc"
+   case ('stem_area_index')
+     out_file = "./stem_area_index." // grid_tiles(tile) // ".nc"
+     out_file_with_halo = "./stem_area_index." // grid_tiles(tile) // ".halo.nc"
    case ('visible_black_sky_albedo', 'visible_white_sky_albedo', 'near_IR_black_sky_albedo', 'near_IR_white_sky_albedo')
      out_file = "./snowfree_albedo." // grid_tiles(tile) // ".nc"
      out_file_with_halo = "./snowfree_albedo." // grid_tiles(tile) // ".halo.nc"

@@ -183,6 +183,18 @@
    call source_grid_cleanup
  endif
 
+
+ ! Stem Area Index
+
+  if (trim(input_stem_area_index_file) /= "NULL") then
+    call define_source_grid(localpet, npets, input_stem_area_index_file)
+    method=ESMF_REGRIDMETHOD_BILINEAR
+    if (trim(stem_area_index_method)=="conserve") method=ESMF_REGRIDMETHOD_CONSERVE
+    call interp(localpet, method, input_stem_area_index_file)
+    call source_grid_cleanup
+   endif
+
+
  call model_grid_cleanup
 
  print*,"- CALL ESMF_finalize"

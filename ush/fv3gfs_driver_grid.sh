@@ -593,6 +593,8 @@ The following parameters were used
 	lake_data_srce=$lake_data_srce
         binary_lake=$binary_lake
 	lake_cutoff=$lake_cutoff
+	input_leaf_area_index_file=$input_leaf_area_index_file
+	stem_leaf_area_index_file=$input_stem_area_index_file
 EOF
 elif [ $gtype = nest ] || [ $gtype = regional_gfdl ]; then
 

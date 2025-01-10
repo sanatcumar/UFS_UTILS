@@ -55,6 +55,8 @@
      default_value = 0.5
    case ('leaf_area_index') ! leaf area index
      default_value = 1.0
+  case ('stem_area_index') ! stem area index
+      default_value = 0.0
    case ('visible_black_sky_albedo') ! visible black sky albedo
      default_value = 0.1
    case ('visible_white_sky_albedo') ! visible white sky albedo
