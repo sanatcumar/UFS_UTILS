@@ -31,7 +31,7 @@
  integer                            :: varid, record
  integer                            :: tile_num, pt_loc_this_tile
  integer                            :: isrctermprocessing
-
+ double precision                   :: scale
  integer(esmf_kind_i4), allocatable :: mask_mdl_one_tile(:,:)
  integer(esmf_kind_i4), pointer     :: unmapped_ptr(:)
 
@@ -111,6 +111,15 @@
      call netcdf_err(status, "IN ROUTINE INTERP READING FIELD ID")
      status = nf90_get_var(ncid, varid, data_src_global, start=(/1,1,t/), count=(/i_src,j_src,1/))
      call netcdf_err(status, "IN ROUTINE INTERP READING FIELD")
+   
+     call netcdf_err(status, "IN ROUTINE INTERP READING FIELD")
+     status=nf90_get_att(ncid, varid, 'scale_factor', scale)
+     if (status == 0) then
+     call scale_data(data_src_global,i_src,j_src,scale)
+     endif
+
+
+
    endif
 
    print*,"- CALL FieldScatter FOR SOURCE GRID DATA."
@@ -194,7 +203,7 @@
 
    if (.not. fract_vegsoil_type) then
      select case (trim(field_names(n)))
-       case ('substrate_temperature','vegetation_greenness','leaf_area_index','slope_type','soil_type','soil_color')
+     case('substrate_temperature','vegetation_greenness','leaf_area_index','slope_type','soil_type','soil_color','stem_area_index')
        if (localpet == 0) then
          allocate(vegt_mdl_one_tile(i_mdl,j_mdl))
        else
@@ -227,7 +236,7 @@
 
      if (.not. fract_vegsoil_type) then
        select case (trim(field_names(n)))
-         case ('substrate_temperature','vegetation_greenness','leaf_area_index','slope_type','soil_type','soil_color')
+         case('substrate_temperature','vegetation_greenness','leaf_area_index','slope_type','soil_type','soil_color','stem_area_index')
            print*,"- CALL FieldGather FOR MODEL GRID VEG TYPE."
            call ESMF_FieldGather(vegt_field_mdl, vegt_mdl_one_tile, rootPet=0, tile=tile, rc=rc)
            if(ESMF_logFoundError(rcToCheck=rc,msg=ESMF_LOGERR_PASSTHRU,line=__LINE__,file=__FILE__)) &
@@ -240,13 +249,14 @@
        call search (data_mdl_one_tile, mask_mdl_one_tile, i_mdl, j_mdl, tile, field_names(n))
        if (.not. fract_vegsoil_type) then
          select case (field_names(n))
-           case ('substrate_temperature','vegetation_greenness','leaf_area_index','slope_type','soil_type','soil_color')
+           case('substrate_temperature','vegetation_greenness','leaf_area_index','slope_type','soil_type','soil_color','stem_area_index')
              call adjust_for_landice (data_mdl_one_tile, vegt_mdl_one_tile, i_mdl, j_mdl, field_names(n))
          end select
        endif
        where(mask_mdl_one_tile == 0) data_mdl_one_tile = missing
        call output (data_mdl_one_tile, lat_mdl_one_tile, lon_mdl_one_tile, i_mdl, j_mdl, tile, record, t, n)
      endif
+     
 
      if (.not. fract_vegsoil_type) then
        if (field_names(n) == 'vegetation_type') then
@@ -335,6 +345,15 @@
        endif
      enddo
      enddo
+   case ('stem_area_index') ! stem area index
+     landice_value = 0.0 ! bare ground
+     do j = 1, jdim
+      do i = 1, idim
+       if (nint(vegt(i,j)) == landice) then
+        field(i,j) = landice_value
+       endif
+      enddo
+     enddo
    case ('slope_type') ! slope type
      landice_value = 9.0
      do j = 1, jdim
@@ -372,3 +391,33 @@
  end select
 
  end subroutine adjust_for_landice
+
+
+!> use Scale to fix the data to the correct value
+!!
+!! @param[inout]   field to scale.
+!! @param[in] idim i dimension of model tile.
+!! @param[in] jdim j dimension of model tile.
+!! @param[in] scale factor to scale the field.
+!! @author George Gayno NCEP/EMC
+!! @author Sanath Kumar NCEP/EMC
+!!
+subroutine scale_data(field,idim,jdim,scale)
+
+ use esmf
+ use mpi
+
+ implicit none
+ integer, intent(in)               :: idim, jdim
+ integer                           :: i, j
+ real(esmf_kind_r4), intent(inout) :: field(idim,jdim)
+ double precision                  :: scale
+
+ do j = 1, jdim
+  do i = 1, idim
+   field(i,j) = field(i,j)*scale
+  enddo
+ enddo
+end subroutine scale_data
+
+

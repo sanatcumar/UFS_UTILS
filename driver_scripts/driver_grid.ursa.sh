@@ -5,10 +5,10 @@
 #SBATCH --open-mode=truncate
 #SBATCH -o log.fv3_grid_driver
 #SBATCH -e log.fv3_grid_driver
-#SBATCH --nodes=4 --ntasks-per-node=12
+#SBATCH --nodes=6 --ntasks-per-node=12
 #SBATCH --mem=300g
-#SBATCH -q debug
-#SBATCH -t 00:30:00
+#SBATCH -q batch
+#SBATCH -t 04:30:00
 
 #-----------------------------------------------------------------------
 # Driver script to create a cubic-sphere based model grid on Ursa.
@@ -158,7 +158,10 @@ fi
 
 export home_dir=$SLURM_SUBMIT_DIR/..
 export TEMP_DIR=/scratch4/NCEPDEV/stmp/$LOGNAME/fv3_grid.$gtype
-export out_dir=/scratch4/NCEPDEV/stmp/$LOGNAME/my_grids
+export out_dir=/scratch4/NCEPDEV/stmp/$LOGNAME/my_grids/C96.mx100/
+export input_leaf_area_index_file=/scratch3/NCEPDEV/land/Sanath.Kumar/ufs/UFS_UTILS/fix/sfc_climo/LAI_climo_pnnl.nc
+export input_stem_area_index_file=/scratch3/NCEPDEV/land/Sanath.Kumar/ufs/data/SAI_NESDIS_climo_2012_2021.nc
+
 
 #-----------------------------------------------------------------------
 # Should not need to change anything below here.
